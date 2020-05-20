@@ -4,6 +4,12 @@ variable "additional_cidrs" {
   description = "A list of additional CIDR ranges assigned to this VPC"
 }
 
+variable "azs" {
+  type        = list
+  default     = ["a", "b"]
+  description = "A list of suffix letters to specify which AZs that subnets should be created within."
+}
+
 variable "cidr_block" {
   type        = string
   description = "Main CIDR block for the VPC"
@@ -13,12 +19,6 @@ variable "ipv6" {
   type        = bool
   description = "Booleans on whether to auto-generate an IPv6 CIDR for this VPC"
   default     = false
-}
-
-variable "num_azs" {
-  type        = number
-  default     = 2
-  description = "The number of AZs that subnets should be deployed across"
 }
 
 variable "tags" {
