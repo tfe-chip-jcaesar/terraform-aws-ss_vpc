@@ -2,6 +2,14 @@ output "vpc_id" {
   value = aws_vpc.main.id
 }
 
+output "cidr" {
+  value = var.cidr
+}
+
+output "route_tables" {
+  value = [aws_route_table.pub_rt.id, aws_route_table.priv_rt.id]
+}
+
 output "subnets" {
   value = {
     "public"  = aws_subnet.public
