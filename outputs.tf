@@ -9,6 +9,10 @@ output "peer_data" {
   }
 }
 
+output "peer_list" {
+  value = aws_vpc_peering_connection.peer
+}
+
 output "subnets" {
   value = {
     "public"  = aws_subnet.public
