@@ -3,11 +3,11 @@ output "vpc_id" {
 }
 
 output "cidr" {
-  value = var.cidr
+  value = var.cidr_block
 }
 
 output "route_tables" {
-  value = [aws_route_table.pub_rt.id, aws_route_table.priv_rt.id]
+  value = concat([aws_route_table.pub_rt.id], aws_route_table.priv_rt.*.id, aws_route_table.db_rt.*.id)
 }
 
 output "subnets" {

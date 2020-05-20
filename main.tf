@@ -147,10 +147,26 @@ resource "aws_route_table" "priv_rt" {
   tags = merge({ Name = join("_", [var.vpc_name, "privRT", each.key]) }, var.tags)
 }
 
+resource "aws_route_table" "db_rt" {
+  for_each = local.db_subnets
+
+  vpc_id = aws_vpc.main.id
+
+  tags = merge({ Name = join("_", [var.vpc_name, "dbRT", each.key]) }, var.tags)
+}
+
 resource "aws_route" "priv_internet4" {
   for_each = local.private_subnets
 
   route_table_id         = aws_route_table.priv_rt[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.nat_gw[each.key].id
+}
+
+resource "aws_route" "db_internet4" {
+  for_each = local.db_subnets
+
+  route_table_id         = aws_route_table.db_rt[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat_gw[each.key].id
 }
@@ -166,5 +182,5 @@ resource "aws_route_table_association" "db_rt" {
   for_each = local.db_subnets
 
   subnet_id      = aws_subnet.db[each.key].id
-  route_table_id = aws_route_table.priv_rt[each.key].id
+  route_table_id = aws_route_table.db_rt[each.key].id
 }
