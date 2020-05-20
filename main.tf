@@ -101,7 +101,7 @@ resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.nat_gw.id
   subnet_id     = aws_subnet.public["a"].id
 
-  tags = merge({ Name = join("_", [var.vpc_name, "natgw", each.key]) }, var.tags)
+  tags = merge({ Name = join("_", [var.vpc_name, "natgw", "a"]) }, var.tags)
 }
 
 # -----------------------------------------------------------------------------
