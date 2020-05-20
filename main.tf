@@ -134,7 +134,7 @@ resource "aws_subnet" "db" {
   cidr_block        = each.value.cidr
   availability_zone = join("", [data.aws_region.current.name, each.key])
 
-  tags = merge({ Name = join("_", [var.vpc_name, "private", each.key]) }, var.tags)
+  tags = merge({ Name = join("_", [var.vpc_name, "db", each.key]) }, var.tags)
 }
 
 
