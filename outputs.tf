@@ -6,8 +6,13 @@ output "cidr" {
   value = var.cidr_block
 }
 
+locals {
+  pub_rts  = [aws_route_table.pub_rt.id]
+  priv_rts = [for rt in aws_route_table.priv_rt : rt.id]
+  db_rts   = [for rt in aws_route_table.db_rt : rt.id]
+}
 output "route_tables" {
-  value = concat([aws_route_table.pub_rt.id], aws_route_table.priv_rt.*.id, aws_route_table.db_rt.*.id)
+  value = concat(local.pub_rts, local.priv_rts, local.db_rts)
 }
 
 output "subnets" {
