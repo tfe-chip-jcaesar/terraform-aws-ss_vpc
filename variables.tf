@@ -36,6 +36,7 @@ variable "peer_accept" {
 variable "tags" {
   type        = map(string)
   description = "The value placed in the 'owner' tag on resources created by this module"
+  default     = {}
 }
 
 variable "vpc_name" {
