@@ -94,16 +94,12 @@ resource "aws_route_table_association" "pub_rt" {
 # -----------------------------------------------------------------------------
 
 resource "aws_eip" "nat_gw" {
-  for_each = local.public_subnets
-
   vpc = true
 }
 
 resource "aws_nat_gateway" "nat_gw" {
-  for_each = local.public_subnets
-
-  allocation_id = aws_eip.nat_gw[each.key].id
-  subnet_id     = aws_subnet.public[each.key].id
+  allocation_id = aws_eip.nat_gw.id
+  subnet_id     = aws_subnet.public["a"].id
 
   tags = merge({ Name = join("_", [var.vpc_name, "natgw", each.key]) }, var.tags)
 }
@@ -160,7 +156,7 @@ resource "aws_route" "priv_internet4" {
 
   route_table_id         = aws_route_table.priv_rt[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat_gw[each.key].id
+  nat_gateway_id         = aws_nat_gateway.nat_gw.id
 }
 
 resource "aws_route" "db_internet4" {
@@ -168,7 +164,7 @@ resource "aws_route" "db_internet4" {
 
   route_table_id         = aws_route_table.db_rt[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat_gw[each.key].id
+  nat_gateway_id         = aws_nat_gateway.nat_gw.id
 }
 
 resource "aws_route_table_association" "priv_rt" {
