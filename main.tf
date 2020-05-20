@@ -33,6 +33,30 @@ resource "aws_vpc_ipv4_cidr_block_association" "secondary_cidr" {
 }
 
 # -----------------------------------------------------------------------------
+# VPC Peering Sessions
+# -----------------------------------------------------------------------------
+
+resource "aws_vpc_peering_connection" "peer" {
+  for_each = var.peers
+
+  vpc_id      = aws_vpc.main.id
+  peer_vpc_id = each.value.vpc_id
+  peer_region = each.value.region
+  auto_accept = true
+}
+
+# -----------------------------------------------------------------------------
+# VPC Peering Sessions Acceptances
+# -----------------------------------------------------------------------------
+
+resource "aws_vpc_peering_connection_accepter" "peer" {
+  for_each = var.peer_accept
+
+  vpc_peering_connection_id = each.value
+  auto_accept               = true
+}
+
+# -----------------------------------------------------------------------------
 # Internet Gateway
 # -----------------------------------------------------------------------------
 

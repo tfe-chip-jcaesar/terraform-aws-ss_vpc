@@ -2,6 +2,13 @@ output "vpc_id" {
   value = aws_vpc.main.id
 }
 
+output "peer_data" {
+  value = {
+    "vpc_id" = aws_vpc.main.id,
+    "region" = data.aws_region.current.name
+  }
+}
+
 output "subnets" {
   value = {
     "public"  = aws_subnet.public

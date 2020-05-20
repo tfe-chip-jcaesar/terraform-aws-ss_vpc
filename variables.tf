@@ -21,6 +21,18 @@ variable "ipv6" {
   default     = false
 }
 
+variable "peers" {
+  type        = map
+  description = "A map of peer_data objects that we should create peering sessions with, such as {'peer2'}"
+  default     = {}
+}
+
+variable "peer_accept" {
+  type        = map
+  description = "A map of peering IDs to accept"
+  default     = {}
+}
+
 variable "tags" {
   type        = map(string)
   description = "The value placed in the 'owner' tag on resources created by this module"
